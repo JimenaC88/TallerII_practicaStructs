@@ -143,6 +143,10 @@ int main(){
         }else if(cont_cb==cont_cm){
             printf("LOS CHICOS BUENOS HAN EMPATADO CON LOS MALOS \n");
         }
+        free(lista_buenos);
+        lista_buenos=NULL;
+        free(lista_malos);
+        lista_malos=NULL;
         cont_cb=0;
         cont_cm=0;
         printf("DESEA REALIZAR OTRA VOTACION? (ingrese E para salir) \n");
