@@ -92,8 +92,10 @@ void muestra(listas *lista){
 int main(){
     listas *lista_buenos=NULL;
     listas *lista_malos=NULL;
-    char salir='A';
-    int cont=0;
+    char salir;
+    int cont_cb=0;
+    int cont_cm=0;
+    char entrada;
     while(salir!='E'){
         Legisladores *legislador=malloc(sizeof(Legisladores));
         legislador->nombre=malloc(10*sizeof(char));
@@ -101,6 +103,7 @@ int main(){
         scanf("%s", legislador->nombre);
         votacion(legislador);
         if(legislador->voto=='F'){
+            cont_cm++;
             if(lista_malos==NULL){
                 lista_malos=crear_legislador(legislador);
                 suprime(legislador, &lista_buenos);
@@ -110,6 +113,7 @@ int main(){
             suprime(legislador, &lista_buenos);
             }
         }else if(legislador->voto=='C'){
+            cont_cb++;
             if(lista_buenos==NULL){
                 lista_buenos=crear_legislador(legislador);
                 suprime(legislador, &lista_malos);
@@ -119,15 +123,32 @@ int main(){
             suprime(legislador, &lista_malos);
             }
         }
-        cont++;
-        if(cont==4){
+
+        printf("Desea ingresar otro senador S/N: \n");
+        scanf("%c", &entrada);
+        while(entrada!='S'&&entrada!='N'){
+            printf("Ingrese S o N \n");
+            scanf("%c", &entrada);
+        }
+        if(entrada=='N'){
             printf("Los chicos buenos son: \n");
             muestra(lista_buenos);
             printf("\n");
             printf("Los chicos malos son: \n");
             muestra(lista_malos);
-            cont=0;
+        if(cont_cb>cont_cm){
+            printf("LOS CHICOS BUENOS HAN GANADO\n");
+        }else if(cont_cb<cont_cm){
+            printf("LOS CHICOS MALOS HAN GANADO\n");
+        }else if(cont_cb==cont_cm){
+            printf("LOS CHICOS BUENOS HAN EMPATADO CON LOS MALOS \n");
         }
+        cont_cb=0;
+        cont_cm=0;
+        printf("DESEA REALIZAR OTRA VOTACION? (ingrese E para salir) \n");
+        scanf(" %c", &salir);
+        }
+
     }
     return 0;
 }
