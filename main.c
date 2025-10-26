@@ -71,38 +71,26 @@ bool miembro(Legisladores *leg){
                 return false;
              }
 }
-void votacion(Legisladores *leg){
+void votacion(listas *leg){
+     listas *lista_buenos=NULL;
+     listas *lista_malos=NULL;
+     int cont_cb=0;
+     int cont_cm=0;
+    while(leg!=NULL){
+     Legisladores *legislador=malloc(sizeof(Legisladores));
+     legislador->nombre=malloc(10*sizeof(char));
+     legislador->nombre=leg->nombre_legislador;
      char voto;
-     if(miembro(leg)==true){
-        printf("ingrese el voto del legislador F/C\n");
+     if(miembro(legislador)==true){
+        printf("ingrese el voto del legislador %s F/C\n", legislador->nombre);
         scanf("%c", &voto);
         while(voto!='F'&&voto!='C'){
             printf("ingrese F/C\n");
             scanf("%c", &voto);
         }
      }
-     leg->voto=voto;
-}
-void muestra(listas *lista){
-     while(lista!=NULL){
-        printf(" %s \n", lista->nombre_legislador);
-        lista=lista->sgte;
-     }
-}
-int main(){
-    listas *lista_buenos=NULL;
-    listas *lista_malos=NULL;
-    char salir;
-    int cont_cb=0;
-    int cont_cm=0;
-    char entrada;
-    while(salir!='E'){
-        Legisladores *legislador=malloc(sizeof(Legisladores));
-        legislador->nombre=malloc(10*sizeof(char));
-        printf("Ingrese el nombre del legislador:\n");
-        scanf("%s", legislador->nombre);
-        votacion(legislador);
-        if(legislador->voto=='F'){
+     legislador->voto=voto;
+     if(legislador->voto=='F'){
             cont_cm++;
             if(lista_malos==NULL){
                 lista_malos=crear_legislador(legislador);
@@ -123,15 +111,9 @@ int main(){
             suprime(legislador, &lista_malos);
             }
         }
-
-        printf("Desea ingresar otro legislador S/N: \n");
-        scanf("%c", &entrada);
-        while(entrada!='S'&&entrada!='N'){
-            printf("Ingrese S o N \n");
-            scanf("%c", &entrada);
-        }
-        if(entrada=='N'){
-            printf("Los chicos buenos son: \n");
+     leg=leg->sgte;
+    }
+    printf("Los chicos buenos son: \n");
             muestra(lista_buenos);
             printf("\n");
             printf("Los chicos malos son: \n");
@@ -143,16 +125,42 @@ int main(){
         }else if(cont_cb==cont_cm){
             printf("LOS CHICOS BUENOS HAN EMPATADO CON LOS MALOS \n");
         }
-        free(lista_buenos);
-        lista_buenos=NULL;
-        free(lista_malos);
-        lista_malos=NULL;
-        cont_cb=0;
-        cont_cm=0;
+}
+void muestra(listas *lista){
+     while(lista!=NULL){
+        printf(" %s \n", lista->nombre_legislador);
+        lista=lista->sgte;
+     }
+}
+int main(){
+        listas *legisladores=NULL;
+        char salir;
+        char entrada;
+        Legisladores *legislador=malloc(sizeof(Legisladores));
+        legislador->nombre=malloc(10*sizeof(char));
+        printf("Ingrese el nombre del legislador:\n");
+        scanf("%s", legislador->nombre);
+        legisladores=crear_legislador(legislador);
+        while(entrada!='N'){
+        printf("Desea ingresar otro legislador? S/N: \n");
+        scanf("%c", &entrada);
+        while(entrada!='S'&&entrada!='N'){
+            printf("Ingrese S o N \n");
+            scanf("%c", &entrada);
+        }
+        if(entrada=='S'){
+            Legisladores *legislador=malloc(sizeof(Legisladores));
+            legislador->nombre=malloc(10*sizeof(char));
+            printf("Ingrese el nombre del legislador:\n");
+            scanf("%s", legislador->nombre);
+            insertar(legislador, legisladores);
+        }
+        }
+        muestra(legisladores);
+        while(salir!='E'){
+        votacion(legisladores);
         printf("DESEA REALIZAR OTRA VOTACION? (ingrese E para salir) \n");
         scanf(" %c", &salir);
         }
-
-    }
     return 0;
 }
