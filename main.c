@@ -124,7 +124,7 @@ int main(){
             }
         }
 
-        printf("Desea ingresar otro senador S/N: \n");
+        printf("Desea ingresar otro legislador S/N: \n");
         scanf("%c", &entrada);
         while(entrada!='S'&&entrada!='N'){
             printf("Ingrese S o N \n");
